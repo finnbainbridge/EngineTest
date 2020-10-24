@@ -12,7 +12,9 @@
 #include "Engine/Renderer/Renderer.hpp"
 #include "Engine/Renderer/Amber.hpp"
 #include "Engine/Res.hpp"
+#include "glm/fwd.hpp"
 #include <memory>
+#include <cstdlib>
 
 class TriangleElement3D : public Engine::E3D::ManualMeshElement3D {
     private:
@@ -59,7 +61,7 @@ void render(float delta)
 {
     // LOG_ASSERT(true);
     // Rotate the model
-    std::dynamic_pointer_cast<Engine::E3D::Element3D>(document->body->getElementsByTagName("element3d", true)[1])->rotate(1.5 * delta, glm::vec3(0, 1, 0));
+    // std::dynamic_pointer_cast<Engine::E3D::Element3D>(document->body->getElementsByTagName("element3d", true)[1])->rotate(1.5 * delta, glm::vec3(0, 1, 0));
 
 }
 
@@ -111,7 +113,25 @@ int main(int argc, char const* argv[])
     // tri_element->saveToFile("/shaders/save_test.xml");
 
     // Test XML loading
-    document->body->appendChild(document->loadFromFile("assets/jmodl.xml"));
+    // document->body->appendChild(document->loadFromFile("assets/jmodl.xml"));
+    srand (time(NULL));
+
+    for (int i = 0; i < 11; i++)
+    {
+        auto ele = std::make_shared<Engine::E3D::Element3D>(document);
+        ele->translate(glm::vec3(-15 + i*3, 0, 0));
+        if (rand() % 10 + 1 < 6)
+        {
+            ele->appendChild(document->loadFromFile("assets/jmodl.xml"));
+        }
+        else
+        {
+            ele->appendChild(document->loadFromFile("assets/green_fixed.xml"));
+        }
+        
+        document->body->appendChild(ele);
+        // ele->callChildUpdate();
+    }
 
     renderer->setCamera(camera);
 
