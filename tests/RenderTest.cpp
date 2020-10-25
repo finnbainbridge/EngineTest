@@ -72,6 +72,7 @@ int main(int argc, char const* argv[])
     document = Engine::Document::createDocument();
     auto renderer = std::make_shared<Engine::Renderer::Amber>(document);
     renderer->createWindow(1024, 866, "Test");
+    LOG_INFO("Window created");
 
     document->addElement("triangle", std::make_shared<Engine::DOM::ElementClassFactory<TriangleElement3D>>());
 
@@ -118,24 +119,49 @@ int main(int argc, char const* argv[])
 
     for (int i = 0; i < 11; i++)
     {
+        LOG_INFO("Creating model "+std::to_string(i+1)+"/11");
         auto ele = std::make_shared<Engine::E3D::Element3D>(document);
         ele->translate(glm::vec3(-15 + i*3, 0, 0));
         if (rand() % 10 + 1 < 6)
         {
+            LOG_INFO("Creating a jmodl");
             ele->appendChild(document->loadFromFile("assets/jmodl.xml"));
         }
         else
         {
+            LOG_INFO("Creating a green");
             ele->appendChild(document->loadFromFile("assets/green_fixed.xml"));
         }
         
         document->body->appendChild(ele);
         // ele->callChildUpdate();
     }
+    LOG_INFO("Models created");
 
+    // Add sun
+    // auto sun = std::make_shared<Engine::E3D::LightElement3D>(document);
+    // sun->translate(glm::vec3(-20, 20, -20));
+    // sun->diffuse = glm::vec3(0.5, 0.5, 0.5);
+    // sun->ambient = glm::vec3(0.2, 0.2, 0.2);
+    // sun->specular = glm::vec3(0, 0, 0);
+    // sun->radius = 500;
+
+    // document->body->appendChild(sun);
+
+    // Add light
+    auto light1 = std::make_shared<Engine::E3D::LightElement3D>(document);
+    light1->translate(glm::vec3(0, 0, 3));
+    light1->diffuse = glm::vec3(0.5, 0.5, 0.5);
+    light1->ambient = glm::vec3(0.5, 0.5, 0.5);
+    light1->specular = glm::vec3(0.1, 0.1, 0.1);
+    light1->radius = 20;
+    LOG_INFO("Light created");
+
+    document->body->appendChild(light1);
     renderer->setCamera(camera);
 
     renderer->setMouseMode(Engine::Input::MouseMode::Free);
+    LOG_INFO("Added nodes");
     // renderer->setCursorMode(Engine::Input::CursorMode::Hidden);
 
     renderer->mainloop(render);
