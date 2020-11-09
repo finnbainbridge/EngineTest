@@ -151,9 +151,8 @@ int main(int argc, char const* argv[])
     // Add light
     auto light1 = std::make_shared<Engine::E3D::LightElement3D>(document);
     light1->translate(glm::vec3(0, 0, 3));
-    light1->diffuse = glm::vec3(0.5, 0.5, 0.5);
+    light1->intensity = glm::vec3(0.2, 0.2, 0.2);
     light1->ambient = glm::vec3(0.5, 0.5, 0.5);
-    light1->specular = glm::vec3(0.1, 0.1, 0.1);
     light1->radius = 20;
     LOG_INFO("Light created");
 
