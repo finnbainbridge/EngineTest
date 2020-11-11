@@ -122,15 +122,23 @@ int main(int argc, char const* argv[])
         LOG_INFO("Creating model "+std::to_string(i+1)+"/11");
         auto ele = std::make_shared<Engine::E3D::Element3D>(document);
         ele->translate(glm::vec3(-15 + i*3, 0, 0));
-        if (rand() % 10 + 1 < 6)
+        // ele->translate(glm::vec3(i*3, 0, 0));
+        auto n = rand() % 15 + 1;
+        if (rand() % 15 + 1 < 6)
         {
             LOG_INFO("Creating a jmodl");
             ele->appendChild(document->loadFromFile("assets/jmodl.xml"));
         }
-        else
+        else if (n < 10)
         {
             LOG_INFO("Creating a green");
             ele->appendChild(document->loadFromFile("assets/green_fixed.xml"));
+        }
+        else
+        {
+            LOG_INFO("Creating a backpack");
+            auto elem = document->loadFromFile("assets/backpack.xml");
+            ele->appendChild(elem);
         }
         
         document->body->appendChild(ele);
@@ -151,7 +159,7 @@ int main(int argc, char const* argv[])
     // Add light
     auto light1 = std::make_shared<Engine::E3D::LightElement3D>(document);
     light1->translate(glm::vec3(0, 0, 3));
-    light1->intensity = glm::vec3(0.2, 0.2, 0.2);
+    light1->intensity = glm::vec3(0.8, 0.8, 0.8);
     light1->ambient = glm::vec3(0.5, 0.5, 0.5);
     light1->radius = 20;
     LOG_INFO("Light created");

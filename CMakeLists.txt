@@ -5,10 +5,17 @@ project(EngineTest)
 set (CMAKE_CXX_STANDARD 17)
 
 set(ENGINE_PACKAGE_FILES "--preload-file ../assets --preload-file ../shaders")
+
+set(ENGINE_BUILD_TOOL OFF)
 add_subdirectory(subprojects/Engine)
 
 add_executable(EngineTest tests/RenderTest.cpp)
 target_link_libraries(EngineTest PUBLIC Engine)
+
+# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+# SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+# SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+
 
 if (EMSCRIPTEN)
     message("Building for Web (Emscripten/WebGL 2)")
